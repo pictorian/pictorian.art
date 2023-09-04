@@ -1,0 +1,126 @@
+{:paths   ["src" "resources"]
+
+ :mvn/repos {"central" {:url "https://repo1.maven.org/maven2/"}
+             "clojars" {:url "https://clojars.org/repo"}}
+
+ :deps    {org.clojure/clojure       {:mvn/version "1.12.0-alpha4"}
+           org.clojure/clojurescript {:mvn/version "1.11.60"}
+
+           ;; Routing
+           metosin/reitit {:mvn/version "0.6.0"}
+
+           ;; Ring
+           metosin/ring-http-response {:mvn/version "0.9.3"}
+           ring/ring-core             {:mvn/version "1.10.0"}
+           ring/ring-defaults         {:mvn/version "0.3.3"}
+           luminus/ring-ttl-session   {:mvn/version "0.3.3"}
+
+           ;; Logging
+           ch.qos.logback/logback-classic {:mvn/version "1.4.4"}
+
+           ;; Exceptions
+           exoscale/ex {:mvn/version "0.4.1"}
+
+           ;; Data coercion
+           luminus-transit/luminus-transit {:mvn/version "0.1.5"
+                                            :exclusions  [com.cognitect/transit-clj]}
+           metosin/muuntaja                {:mvn/version "0.6.8"}
+
+           ;; kit Libs
+           io.github.kit-clj/kit-core {:mvn/version "1.0.3"}
+           selmer/selmer              {:mvn/version "1.12.59"}
+
+           ;; xtdb
+           com.xtdb/xtdb-core    {:mvn/version "1.24.0"}
+           com.xtdb/xtdb-rocksdb {:mvn/version "1.24.0"}
+           ;; org.clojars.cwh/crux-xodus {:mvn/version "2.0.0"}
+           ;; avisi-apps/xtdb-xodus {:local/root "./local-jars/xtdb-xodus-1.23.1.jar"}
+
+           ;; time
+           tick/tick {:mvn/version "0.5.0"}
+
+           ;; hyperfiddle
+           ;; com.hyperfiddle/electric {:local/root "./local-jars/electric-v2-alpha-386-g447d9a6c.jar"}
+           com.hyperfiddle/electric {:mvn/version "v2-alpha-428-g22937f75"}
+           missionary/missionary    {:mvn/version "b.31"}
+           com.hyperfiddle/rcf      {:mvn/version "20220926-202227"}
+           info.sunng/ring-jetty9-adapter
+           {; :mvn/version "0.14.3"       ; (Jetty 9) is Java 8 compatible;
+            :mvn/version "0.22.1"       ; (Jetty 10) is NOT Java 8 compatible
+            ;; :exclusions [org.slf4j/slf4j-api info.sunng/ring-jetty9-adapter-http3] ; no need
+            }
+
+           ;; URI
+           lambdaisland/uri {:mvn/version "1.15.125"}
+
+           ;; auth
+           buddy/buddy-core     {:mvn/version "1.11.423"}
+           buddy/buddy-auth     {:mvn/version "3.0.323"}
+           buddy/buddy-sign        {:mvn/version "3.5.351"}
+           buddy/buddy-hashers     {:mvn/version "2.0.167"}
+
+           ;; libs
+           com.google.guava/guava      {:mvn/version "31.1-jre"}
+           spootnik/signal             {:mvn/version "0.2.4"}
+           org.clojure/data.csv        {:mvn/version "1.0.1"}
+           dk.ative/docjure            {:mvn/version "1.14.0"}
+           com.draines/postal          {:mvn/version "2.0.4"}
+           com.fulcrologic/statecharts {:mvn/version "1.1.0"}
+           hickory/hickory             {:mvn/version "0.7.1"}}
+
+ :aliases {:dev {:extra-paths ["env/dev/src" "env/dev/resources"]
+                 :extra-deps  {thheller/shadow-cljs {:mvn/version "2.25.2"}
+                               binaryage/devtools {:mvn/version "1.0.6"}
+                               com.lambdaisland/classpath      {:mvn/version "0.0.27"}
+                               ;; criterium/criterium             {:mvn/version "0.4.6"}
+                               expound/expound                 {:mvn/version "0.9.0"}
+                               integrant/repl                  {:mvn/version "0.3.3"}
+                               ;; mvxcvi/cljstyle                 {:mvn/version "0.15.0"}
+                               ;; pjstadig/humane-test-output     {:mvn/version "0.11.0"}
+                               ;; ring/ring-devel                 {:mvn/version "1.9.5"}
+                               ;; ring/ring-mock                  {:mvn/version "0.4.0"}
+                               io.github.kit-clj/kit-generator {:mvn/version "0.1.8"}
+                               org.clojure/tools.namespace     {:mvn/version "1.2.0"}
+                               com.clojure-goes-fast/clj-async-profiler {:mvn/version "1.0.4"}
+                               io.github.nubank/morse {:git/tag "v2023.04.30.01" :git/sha "d99b09c"}}
+                 :jvm-opts
+                 ["-Xss2m"     ; https://github.com/hyperfiddle/photon/issues/11
+                  "-XX:-OmitStackTraceInFastThrow" ;; RCF
+                  "-Djdk.attach.allowAttachSelf"]  ;; clj-async-profiler
+                 :exec-fn user/start
+                 :exec-args {}}
+
+           :build {:extra-paths ["src-build"]
+                   :ns-default build
+                   ;; :extra-paths ["target/classes/cljsbuild" "target/resources"]
+                   :extra-deps {io.github.clojure/tools.build {:mvn/version "0.9.5" :exclusions [com.google.guava/guava]}
+                                ;; io.github.clojure/tools.build {:git/tag "v0.9.4" :git/sha "76b78fe"}
+                                ;; io.github.seancorfield/build-clj {:git/tag "v0.8.0" :git/sha "9bd8b8a"}
+                                thheller/shadow-cljs {:mvn/version "2.25.2"}}
+                   :jvm-opts ["-Xss2m"]}
+
+           :prod {:extra-paths ["env/prod/src" "env/prod/resources"]}
+
+           :nrepl {:extra-deps {nrepl/nrepl {:mvn/version "0.9.0"}}
+                   :main-opts  ["-m" "nrepl.cmdline" "-i"]}
+
+           :cider {:extra-deps {nrepl/nrepl       {:mvn/version "0.9.0"}
+                                cider/cider-nrepl {:mvn/version "0.28.3"}}
+                   :main-opts  ["-m" "nrepl.cmdline" "--middleware" "[cider.nrepl/cider-middleware]" "-i"]}
+
+           :test {:extra-deps  {criterium/criterium                  {:mvn/version "0.4.6"}
+                                expound/expound                      {:mvn/version "0.9.0"}
+                                integrant/repl                       {:mvn/version "0.3.3"}
+                                io.github.cognitect-labs/test-runner {:git/url "https://github.com/cognitect-labs/test-runner.git"
+                                                                      :git/tag "v0.5.0"
+                                                                      :git/sha "b3fd0d2"}
+                                pjstadig/humane-test-output          {:mvn/version "0.11.0"}
+                                ring/ring-devel                      {:mvn/version "1.9.5"}
+                                ring/ring-mock                       {:mvn/version "0.4.0"}
+                                io.github.kit-clj/kit-generator      {:mvn/version "0.1.8"}
+                                org.clojure/tools.namespace          {:mvn/version "1.2.0"}
+                                com.lambdaisland/classpath           {:mvn/version "0.0.27"}}
+                  :exec-fn      cognitect.test-runner.api/test
+                  :extra-paths ["env/test/src" "env/test/resources"]
+                  :main-opts   ["-e" "(require 'pjstadig.humane-test-output) (pjstadig.humane-test-output/activate!)"
+                                "-m" "cognitect.test-runner"]}}}

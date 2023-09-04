@@ -1,0 +1,51 @@
+{:tasks
+ {clean
+  {:doc "Clean compiled project files"
+   :task (shell "clojure -X:build clean")}
+
+  clean-all
+  {:doc "Clean compiled project and all caches"
+   :depends [clean]
+   :requires ([babashka.fs :as fs])
+   :task (do
+           (fs/delete-tree ".shadow-cljs")
+           (fs/delete-tree ".cpcache")
+           (fs/delete-tree ".lsp/.cache")
+           (fs/delete-tree ".clj-kondo/.cache"))}
+
+  install-deps
+  {:doc "Install deps"
+   :task (shell "clojure -A:dev -M -e :ok")}
+
+  install-js
+  {:doc "Install js deps"
+   :task (shell "yarn install")}
+
+  watch-css
+  {:doc "Watch css changes"
+   :task (shell "src-build/build-css.sh --watch")}
+
+  build-css
+  {:doc "Build css"
+   :task (shell "src-build/build-css.sh")}
+
+  build-client
+  {:doc "Build js client"
+   :task (shell "clojure -X:build build-client")}
+
+  outdated-clj
+  {:doc "Find outdated clojure packages"
+   :task (clojure {:continue true} "-Sdeps '{:deps {com.github.liquidz/antq {:mvn/version \"RELEASE\"} org.slf4j/slf4j-nop {:mvn/version \"RELEASE\"}}}' -M -m antq.core")}
+
+  outdated-js
+  {:doc "Find outdated js packages"
+   :depends [install-js]
+   :task (shell "yarn outdated")}
+
+  outdated
+  {:doc "Find clojure and js outdated packages"
+   :depends [outdated-clj outdated-js]}
+
+  uberjar
+  {:doc "Build server and package client and server in uberjar"
+   :task (shell "clojure -X:build uberjar  :jar-name app.jar :verbose true")}}}

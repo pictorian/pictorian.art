@@ -1,0 +1,8 @@
+{:full-name "art.pictorian/website"
+ :ns-name   "art.pictorian/website"
+ :sanitized "art.pictorian/website"
+ :name      "pictorian"
+ :modules   {:root         "modules"
+             :repositories [{:url  "https://github.com/kit-clj/modules.git"
+                             :tag  "master"
+                             :name "kit-modules"}]}}

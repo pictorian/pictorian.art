@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block page %}
+<div class="page page-center">
+    <div class="container container-tight py-4">
+        <div class="text-center mb-4">
+            <a href="/" class="navbar-brand navbar-brand-autodark"><img src="/images/logo.png" height="36" alt=""></a>
+        </div>
+        <div class="card card-md">
+            <div class="card-body">
+                <h2 class="h2 text-center mb-4">{% block title %}{% endblock %}</h2>
+                {% block form %} {% endblock %}
+                {% block footer %} {% endblock %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script type="text/javascript">
+    (function () {
+        const inputs = document.querySelectorAll('.input');
+        const hideErrors = (input) => {
+            input.classList.remove('is-danger')
+            input.parentNode.parentNode.children[2].style.display = "none"
+        }
+        inputs.forEach(input => input.addEventListener('focus', () => hideErrors(input)))
+    })();
+</script>
+{% endblock %}

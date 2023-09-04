@@ -1,0 +1,27 @@
+{:nrepl false
+ :deps {:aliases [:dev]}
+ :builds
+ {:dev {:target :browser
+        :devtools {;; :preloads [devtools.preload]
+                   :watch-dir "resources/public"
+                   :hud #{:errors :progress}
+                   :ignore-warnings true
+                   :loader-mode :default ; faster reload
+                   }
+        :output-dir "resources/public/js"
+        :asset-path "/js"
+        :build-hooks [#_(shadow.cljs.build-report/hook {:output-to "target/build_report_admin.html"})
+                      #_(user/rcf-shadow-hook)]
+        :modules {:shared {:entries [art.pictorian.web.shared]}
+                  :admin-app {:depends-on #{:shared}
+                              :init-fn art.pictorian.web.apps.admin/start
+                              :entries [art.pictorian.web.apps.admin]}}}
+
+  :prod {:target :browser
+         :output-dir "resources/public/js"
+         :asset-path "/js"
+         :module-hash-names true
+         :modules {:shared {:entries [art.pictorian.web.shared]}
+                   :admin-app {:depends-on #{:shared}
+                               :init-fn art.pictorian.web.apps.admin/start
+                               :entries [art.pictorian.web.apps.admin]}}}}}

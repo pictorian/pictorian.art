@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% block head %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Selmer page with Electric apps</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="/css/main.css" rel="stylesheet" type="text/css" />
+    {% endblock %}
+</head>
+
+<!-- <body class="layout-fluid"> -->
+
+<body>
+    {% block page %}
+    <div class="page">
+        <div class="sticky-top">
+            {% block header %}
+            {% include "header.html" %}
+            {% endblock %}
+
+            {% block subheader %}
+            {% include "subheader.html" %}
+            {% endblock %}
+        </div>
+
+        {% block page-wrapper %}
+        <div class="page-wrapper">
+
+            {% block page-header %}
+            <div class="page-header">
+                <div class="container-xl">
+                    <div class="row g-2 align-items-center">
+                        <div class="col">
+                            <h2 class="page-title">
+                                {% block page-title %} {% endblock %}
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endblock %}
+
+            <div class="page-body">
+                <div class="container-xl">
+                    {% block page-body %} {% endblock %}
+                </div>
+            </div>
+        </div>
+        {% endblock %}
+    </div>
+    {% endblock %}
+
+    {% block scripts %} {% shared-js %} {% endblock %}
+</body>
+
+</html>
