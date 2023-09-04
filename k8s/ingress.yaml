@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pictorian
+  namespace: pictorian
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    # cert-manager.io/acme-challenge-type: http01
+    # ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  # tls:
+  #   - hosts:
+  #       # Change this to your own hostname
+  #       - dev.pictorian.ru
+  #     secretName: dev-pictorian-ru-tls
+  rules:
+    # Change this to your own hostname
+    - host: dev.pictorian.ru
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: pictorian
+                port:
+                  number: 3000

@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: pictorian
+  name: pictorian
+  namespace: pictorian
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pictorian
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: pictorian
+    spec:
+      containers:
+        - image: slim777/pictorian
+          name: pictorian
+          resources: {}
+status: {}
